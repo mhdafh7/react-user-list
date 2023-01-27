@@ -14,3 +14,6 @@ Deployed [Link](https://react-user-list-vmgx.vercel.app/).
 - Update User(NYI)
 - Delete User
 - Pagination
+
+Video
+https://user-images.githubusercontent.com/70367338/215158774-7776aaa0-5124-4222-bc29-0b37087709ab.webm
