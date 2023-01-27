@@ -63,4 +63,6 @@ const Pagination = ({pageNumber, setPageNumber}: Props) => {
     </nav>
   );
 };
+
+// TODO: highlight active page button
 export default Pagination;

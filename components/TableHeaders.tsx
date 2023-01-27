@@ -20,4 +20,5 @@ const TableHeaders = () => {
     </thead>
   );
 };
+// TODO: implement sorting
 export default TableHeaders;

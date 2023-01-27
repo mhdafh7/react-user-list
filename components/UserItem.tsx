@@ -67,8 +67,10 @@ const UserItem = ({id, name, email, avatar, role, status, login}: Props) => {
           }}
         >
           <DeleteIcon />
+          {/* TODO: Model confirmation on deleting */}
         </button>
         <button>
+          {/* TODO: Edit user item */}
           <EditIcon />
         </button>
       </td>
