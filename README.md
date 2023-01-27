@@ -13,3 +13,4 @@ Deployed [Link](https://react-user-list-vmgx.vercel.app/).
 - Read User
 - Update User(NYI)
 - Delete User
+- Pagination
