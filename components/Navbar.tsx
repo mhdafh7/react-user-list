@@ -6,19 +6,19 @@ const Navbar = () => {
       {/* navbar borders/shadows */}
       <ul className="flex gap-3 text-center">
         <Link href="">
-          <li className="px-3 py-3 border-x-slate-300 hover:bg-slate-200 transition-all">General</li>
+          <li className="px-3 py-3 border-x-slate-300 hover:bg-slate-200 transition-color">General</li>
         </Link>
         <Link href="/">
-          <li className="px-3 py-3 border-x-slate-300 hover:bg-slate-200 transition-all">Users</li>
+          <li className="px-3 py-3 border-x-slate-300 hover:bg-slate-200 transition-color">Users</li>
         </Link>
         <Link href="">
-          <li className="px-3 py-3 border-x-slate-300 hover:bg-slate-200 transition-all">Plan</li>
+          <li className="px-3 py-3 border-x-slate-300 hover:bg-slate-200 transition-color">Plan</li>
         </Link>
         <Link href="">
-          <li className="px-3 py-3 border-x-slate-300 hover:bg-slate-200 transition-all">Billing</li>
+          <li className="px-3 py-3 border-x-slate-300 hover:bg-slate-200 transition-color">Billing</li>
         </Link>
         <Link href="">
-          <li className="px-3 py-3 border-x-slate-300 hover:bg-slate-200 transition-all">Integrations</li>
+          <li className="px-3 py-3 border-x-slate-300 hover:bg-slate-200 transition-color">Integrations</li>
         </Link>
       </ul>
     </nav>
