@@ -24,6 +24,25 @@ export default function Home() {
   } = useQuery(['users', pageNumber], () => getUsers(pageNumber), {
     keepPreviousData: true,
   });
+  let content;
+
+  if (isLoading) {
+    content = <p className="text-center">Loading....</p>;
+  } else if (isError) {
+    content = (
+      <p className="text-red-600 text-center">{(error as Error).message}</p>
+    );
+  } else {
+    content = (
+      <table className="items-center w-full border-collapse">
+        <TableHeaders />
+        {/* Users List container */}
+        <UsersList
+          users={users}
+        />
+      </table>
+    );
+  }
 
   return (
     <>
@@ -97,16 +116,7 @@ export default function Home() {
             modalOpen={modalOpen}
           />
         ) : null}
-        <main className="flex flex-col items-center w-full flex-1">
-          <TableHeaders />
-          {/* Users List container */}
-          <UsersList
-            isLoading={isLoading}
-            isError={isError}
-            error={error}
-            users={users}
-          />
-        </main>
+        <div className='block w-full overflow-x-auto'>{content}</div>
         {/* Footer */}
         <Pagination
           users={users}

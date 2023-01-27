@@ -1,7 +1,4 @@
 import UserItem from './UserItem';
-import { useQueryClient, useMutation } from 'react-query';
-import { updateUser, addUser, deleteUser } from '../api/usersApi';
-import { useState } from 'react';
 
 type User = {
   id: string;
@@ -9,17 +6,14 @@ type User = {
   email: string;
   avatar: string;
   role: string;
-  status: boolean,
-  login: Date
+  status: boolean;
+  login: Date;
 };
 type Props = {
-  isLoading: boolean;
-  isError: boolean;
-  error: unknown;
   users: [];
 };
 
-const UsersList = ({ isLoading, isError, error, users }: Props) => {
+const UsersList = ({ users }: Props) => {
   // const [newUser, setNewUser] = useState({
   //   firstName: '',
   //   lastName: '',
@@ -52,28 +46,23 @@ const UsersList = ({ isLoading, isError, error, users }: Props) => {
   //     role: newUser.role,
   //   });
   // };
-  let content;
-  if (isLoading) {
-    content = <p className="text-center">Loading....</p>;
-  } else if (isError) {
-    content = (
-      <p className="text-red-600 text-center">{(error as Error).message}</p>
-    );
-  } else {
-    content = users.map((user: User) => {
-      return (
-        <UserItem
-          key={user.id}
-          name={user.name}
-          email={user.email}
-          avatar={user.avatar}
-          role={user.role}
-          login={user.login}
-          status={user.status}
-        />
-      );
-    });
-  }
-  return <div className="flex flex-col w-full">{content}</div>;
+
+  return (
+    <tbody className="">
+      {users.map((user: User) => {
+        return (
+          <UserItem
+            key={user.id}
+            name={user.name}
+            email={user.email}
+            avatar={user.avatar}
+            role={user.role}
+            login={user.login}
+            status={user.status}
+          />
+        );
+      })}
+    </tbody>
+  );
 };
 export default UsersList;
