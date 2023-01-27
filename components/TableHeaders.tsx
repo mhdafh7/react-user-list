@@ -1,3 +1,5 @@
+import React from 'react';
+
 const TableHeaders = () => {
   return (
     <thead className="h-8 text-sm text-gray-400">

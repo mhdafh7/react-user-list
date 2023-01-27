@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import React from 'react';
+import {NextIcon, PrevIcon} from './Svgs';
 
 type PageBtnProps = {
   pageNumber: number;
-  setPageNumber: (pageNumber: number) => void;
+  setPageNumber: React.Dispatch<React.SetStateAction<number>>;
 };
+type Props = PageBtnProps & {users: []};
 
-const PageBtn = ({ pageNumber, setPageNumber }: PageBtnProps) => {
+const PageBtn = ({pageNumber, setPageNumber}: PageBtnProps) => {
   return (
     <button
       onClick={() => {
@@ -16,39 +18,30 @@ const PageBtn = ({ pageNumber, setPageNumber }: PageBtnProps) => {
     </button>
   );
 };
-const Pagination = ({ users, pageNumber, setPageNumber }: any) => {
-  const lastPage = () => {
-    setPageNumber(users.total);
+const Pagination = ({pageNumber, setPageNumber}: Props) => {
+  const prevPage = () => {
+    setPageNumber((prev: number) => prev - 1);
   };
-  const firstPage = () => {
-    setPageNumber(1);
+  const nextPage = () => {
+    setPageNumber((prev: number) => prev + 1);
   };
 
-  const pagesArray = [1, 2, 3, 4, 5, 6];
+  const pagesArray = [1, 2, 3, 4, 5];
   return (
     <nav className="flex justify-between items-center px-4 py-5 border-t-gray-200 border-t-2">
       <button
-        onClick={firstPage}
-        className="px-4 py-2 border-2 rounded-xl flex justify-center items-center gap-3 hover:bg-slate-200 transition-colors"
+        onClick={prevPage}
+        className={`${
+          pageNumber === 1
+            ? 'cursor-not-allowed opacity-50 pointer-events-none'
+            : ''
+        } px-4 py-2 border-2 rounded-xl flex justify-center items-center gap-3 hover:bg-slate-200 transition-colors`}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
-          className="w-6 h-6"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-          />
-        </svg>
+        <PrevIcon />
         Previous
       </button>
       <section className="flex gap-4">
-        {pagesArray.map((pageNumber) => (
+        {pagesArray.map(pageNumber => (
           <PageBtn
             pageNumber={pageNumber}
             setPageNumber={setPageNumber}
@@ -57,24 +50,15 @@ const Pagination = ({ users, pageNumber, setPageNumber }: any) => {
         ))}
       </section>
       <button
-        onClick={lastPage}
-        className="px-4 py-2 border-2 rounded-xl flex justify-center items-center gap-3 hover:bg-slate-200 transition-colors"
+        onClick={nextPage}
+        className={`${
+          pageNumber === 5
+            ? 'pointer-events-none opacity-50 cursor-not-allowed'
+            : ''
+        } px-4 py-2 border-2 rounded-xl flex justify-center items-center gap-3 hover:bg-slate-200 transition-colors`}
       >
         Next
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
-          className="w-6 h-6"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-          />
-        </svg>
+        <NextIcon />
       </button>
     </nav>
   );

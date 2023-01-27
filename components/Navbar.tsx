@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import React from 'react';
 
 const Navbar = () => {
   return (
@@ -6,19 +7,29 @@ const Navbar = () => {
       {/* navbar borders/shadows */}
       <ul className="flex gap-3 text-center">
         <Link href="">
-          <li className="px-3 py-3 border-x-slate-300 hover:bg-slate-200 transition-color">General</li>
+          <li className="px-3 py-3 border-x-slate-300 hover:bg-slate-200 transition-color">
+            General
+          </li>
         </Link>
         <Link href="/">
-          <li className="px-3 py-3 border-x-slate-300 hover:bg-slate-200 transition-color">Users</li>
+          <li className="px-3 py-3 border-x-slate-300 hover:bg-slate-200 transition-color">
+            Users
+          </li>
         </Link>
         <Link href="">
-          <li className="px-3 py-3 border-x-slate-300 hover:bg-slate-200 transition-color">Plan</li>
+          <li className="px-3 py-3 border-x-slate-300 hover:bg-slate-200 transition-color">
+            Plan
+          </li>
         </Link>
         <Link href="">
-          <li className="px-3 py-3 border-x-slate-300 hover:bg-slate-200 transition-color">Billing</li>
+          <li className="px-3 py-3 border-x-slate-300 hover:bg-slate-200 transition-color">
+            Billing
+          </li>
         </Link>
         <Link href="">
-          <li className="px-3 py-3 border-x-slate-300 hover:bg-slate-200 transition-color">Integrations</li>
+          <li className="px-3 py-3 border-x-slate-300 hover:bg-slate-200 transition-color">
+            Integrations
+          </li>
         </Link>
       </ul>
     </nav>

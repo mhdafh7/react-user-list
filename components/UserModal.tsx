@@ -1,14 +1,50 @@
+import {CloseIcon} from './Svgs';
+import {useMutation, useQueryClient} from 'react-query';
+import {addUser} from '../api/usersApi';
+import {FormEvent, useId, useState} from 'react';
+import React from 'react';
+
 type Props = {
   modalOpen: boolean;
   setModalOpen: (modalOpen: boolean) => void;
 };
 
-const UserModal = ({ setModalOpen, modalOpen }: Props) => {
-  const handleSubmit = () => {};
+const UserModal = ({setModalOpen, modalOpen}: Props) => {
+  const [newUser, setNewUser] = useState({
+    name: '',
+    email: '',
+    role: '',
+  });
+  const queryClient = useQueryClient();
+  const newId = useId();
+
+  const addUserMutation = useMutation(addUser, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('users');
+    },
+  });
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    addUserMutation.mutate({
+      id: newId,
+      name: newUser.name,
+      email: newUser.email,
+      role: newUser.role,
+    });
+    setNewUser({
+      name: '',
+      email: '',
+      role: '',
+    });
+  };
+  const handleChange = (e: FormEvent) => {
+    console.log(e);
+  };
   return (
     <div className="absolute w-full h-full bg-black bg-opacity-10 backdrop-blur-sm grid place-items-center px-6">
       <form
         onSubmit={handleSubmit}
+        onChange={handleChange}
         className="flex flex-col gap-4 top-0 right-0 bg-white px-10 pb-12 pt-8 rounded-lg relative"
       >
         {/* modal close button */}
@@ -18,20 +54,7 @@ const UserModal = ({ setModalOpen, modalOpen }: Props) => {
           }}
           className="absolute -top-2 -right-2 bg-gray-600 rounded-full p-2 hover:bg-black transition-color cursor-pointer"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="white"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
+          <CloseIcon />
         </span>
         <h4 className="font-bold text-xl mb-4">User Details</h4>
         <div className="flex flex-col gap-2">
