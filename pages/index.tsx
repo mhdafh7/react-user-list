@@ -50,7 +50,7 @@ export default function Home() {
       </Head>
       <div className="rounded-xl border-2 shadow-sm shadow-gray-200 w-full flex flex-col justify-center overflow-hidden relative">
         {/* Header */}
-        <section className="flex justify-between px-4 pb-3 pt-6 border-b-gray-200 border-b-2">
+        <section className="flex max-md:flex-col justify-between px-4 pb-3 pt-6 border-b-gray-200 border-b-2">
           <div className="mx-3 mb-3">
             <h4 className="text-xl font-medium">Users</h4>
             <p className="text-gray-400">

@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from './Button';
 import {NextIcon, PrevIcon} from './Svgs';
 
 type PageBtnProps = {
@@ -29,7 +30,7 @@ const Pagination = ({pageNumber, setPageNumber}: Props) => {
   const pagesArray = [1, 2, 3, 4, 5];
   return (
     <nav className="flex justify-between items-center px-4 py-5 border-t-gray-200 border-t-2">
-      <button
+      {/* <button
         onClick={prevPage}
         className={`${
           pageNumber === 1
@@ -39,7 +40,17 @@ const Pagination = ({pageNumber, setPageNumber}: Props) => {
       >
         <PrevIcon />
         Previous
-      </button>
+      </button> */}
+      <Button
+        icon={<PrevIcon />}
+        text={'Previous'}
+        onClickFunciton={prevPage}
+        additionalClasses={`${
+          pageNumber === 1
+            ? 'pointer-events-none opacity-50 cursor-not-allowed'
+            : 'hover:bg-gray-200'
+        }`}
+      />
       <section className="flex gap-4">
         {pagesArray.map(pageNumber => (
           <PageBtn
@@ -49,17 +60,16 @@ const Pagination = ({pageNumber, setPageNumber}: Props) => {
           />
         ))}
       </section>
-      <button
-        onClick={nextPage}
-        className={`${
+      <Button
+        icon={<NextIcon />}
+        text={'Next'}
+        onClickFunciton={nextPage}
+        additionalClasses={`${
           pageNumber === 5
             ? 'pointer-events-none opacity-50 cursor-not-allowed'
-            : ''
-        } px-4 py-2 border-2 rounded-xl flex justify-center items-center gap-3 hover:bg-slate-200 transition-colors`}
-      >
-        Next
-        <NextIcon />
-      </button>
+            : 'flex-row-reverse hover:bg-gray-200'
+        }`}
+      />
     </nav>
   );
 };
