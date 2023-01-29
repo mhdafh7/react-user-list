@@ -1,10 +1,8 @@
-import Pagination from '../components/Pagination';
 import {DownloadIcon, PlusIcon} from '../components/Svgs';
 import AddUserModal from '../components/AddUserModal';
 import EditUserModal from '../components/EditUserModal';
 import Head from 'next/head';
 import React, {useContext} from 'react';
-import {useState} from 'react';
 import {useQuery} from 'react-query';
 import {getUsers} from '../api/usersApi';
 import Button from '../components/Button';
@@ -12,8 +10,6 @@ import Table from '../components/Table';
 import {ModalContext} from '../Context/ModalContext';
 
 export default function Home() {
-  const [pageNumber, setPageNumber] = useState(1);
-
   const {addModalOpen, setAddModalOpen, editModalOpen} =
     useContext(ModalContext);
   const handleOpenModal = () => {
@@ -25,7 +21,7 @@ export default function Home() {
     isError,
     error,
     data: users,
-  } = useQuery(['users', pageNumber], () => getUsers(pageNumber), {
+  } = useQuery(['users'], () => getUsers(), {
     keepPreviousData: true,
   });
   let content;
@@ -79,12 +75,6 @@ export default function Home() {
         <div className="block w-full overflow-x-auto overflow-y-hidden">
           {content}
         </div>
-        {/* Footer */}
-        <Pagination
-          users={users}
-          pageNumber={pageNumber}
-          setPageNumber={setPageNumber}
-        />
       </div>
     </>
   );
