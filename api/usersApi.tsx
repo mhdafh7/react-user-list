@@ -11,11 +11,9 @@ const usersApi = axios.create({
   baseURL: 'https://63d3cdd9a93a149755b326eb.mockapi.io/',
 });
 
-export const getUsers = async (pageNumber: number) => {
+export const getUsers = async () => {
   // 10 users per page
-  const res = await usersApi.get(
-    `/users/?limit=10&page=${pageNumber}&seed=abc`
-  );
+  const res = await usersApi.get('/users/?seed=abc');
   return res.data;
 };
 

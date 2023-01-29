@@ -1,11 +1,19 @@
 import React, {useContext, useMemo} from 'react';
 // eslint-disable-next-line node/no-unpublished-import
-import {useTable, useSortBy} from 'react-table';
+import {useTable, useSortBy, usePagination} from 'react-table';
 import Image from 'next/image';
-import {ArrowDown, ArrowUp, DeleteIcon, EditIcon} from './Svgs';
+import {
+  ArrowDown,
+  ArrowUp,
+  DeleteIcon,
+  EditIcon,
+  NextIcon,
+  PrevIcon,
+} from './Svgs';
 import {useMutation, useQueryClient} from 'react-query';
 import {deleteUser} from '../api/usersApi';
 import {ModalContext} from '../Context/ModalContext';
+import Button from './Button';
 
 const Table = ({data}) => {
   const columns = useMemo(
@@ -129,64 +137,120 @@ const Table = ({data}) => {
       },
     ]);
   };
-  const {getTableProps, getTableBodyProps, headerGroups, rows, prepareRow} =
-    useTable(
-      {
-        columns,
-        data,
-      },
-      tableHooks,
-      useSortBy
-    );
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    gotoPage,
+    nextPage,
+    previousPage,
+    state: {pageIndex},
+  } = useTable(
+    {
+      columns,
+      data,
+      initialState: {pageIndex: 1},
+    },
+    tableHooks,
+    useSortBy,
+    usePagination
+  );
   return (
-    <table className="w-full" {...getTableProps()}>
-      <thead className="h-8 text-sm text-gray-400">
-        {headerGroups.map(headerGroup => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
-              <th
-                className="px-6 align-middle py-3 text-sm whitespace-nowrap font-semibold text-left"
-                {...column.getHeaderProps(column.getSortByToggleProps())}
-              >
-                <span className="flex justify-start items-center">
-                  {column.render('Header')}
-                  <span>
-                    {column.isSorted ? (
-                      column.isSortedDesc ? (
-                        <ArrowDown />
+    <>
+      <table className="w-full" {...getTableProps()}>
+        <thead className="h-8 text-sm text-gray-400">
+          {headerGroups.map(headerGroup => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map(column => (
+                <th
+                  className="px-6 align-middle py-3 text-sm whitespace-nowrap font-semibold text-left"
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                >
+                  <span className="flex justify-start items-center">
+                    {column.render('Header')}
+                    <span>
+                      {column.isSorted ? (
+                        column.isSortedDesc ? (
+                          <ArrowDown />
+                        ) : (
+                          <ArrowUp />
+                        )
                       ) : (
-                        <ArrowUp />
-                      )
-                    ) : (
-                      ''
-                    )}
+                        ''
+                      )}
+                    </span>
                   </span>
-                </span>
-              </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody {...getTableBodyProps()}>
-        {rows.map(row => {
-          prepareRow(row);
-          return (
-            <tr {...row.getRowProps()} className="even:bg-slate-100">
-              {row.cells.map(cell => {
-                return (
-                  <td
-                    className="align-middle text-base whitespace-nowrap text-left"
-                    {...cell.getCellProps()}
-                  >
-                    {cell.render('Cell')}
-                  </td>
-                );
-              })}
+                </th>
+              ))}
             </tr>
-          );
-        })}
-      </tbody>
-    </table>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {page.map((row, i) => {
+            prepareRow(row);
+            return (
+              <tr {...row.getRowProps()} className="even:bg-slate-100">
+                {row.cells.map(cell => {
+                  return (
+                    <td
+                      className="align-middle text-base whitespace-nowrap text-left"
+                      {...cell.getCellProps()}
+                    >
+                      {cell.render('Cell')}
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <div className="flex justify-between items-center px-4 py-5 border-t-gray-200 border-t-2">
+        <Button
+          icon={<PrevIcon />}
+          text={'Previous'}
+          onClickFunciton={previousPage}
+          additionalClasses={`${
+            !canPreviousPage
+              ? 'pointer-events-none opacity-50 cursor-not-allowed'
+              : 'hover:bg-gray-200'
+          }`}
+        />
+        <nav className="flex gap-4">
+          {Array.from({length: pageOptions.length}, (_, i) => i + 1).map(
+            pageNum => {
+              return (
+                <button
+                  className={`p-2 ${
+                    pageIndex + 1 === pageNum ? 'bg-gray-200 rounded-md' : ''
+                  }`}
+                  onClick={() => {
+                    gotoPage(pageNum - 1);
+                  }}
+                >
+                  {pageNum}
+                </button>
+              );
+            }
+          )}
+        </nav>
+        <Button
+          icon={<NextIcon />}
+          text={'Next'}
+          onClickFunciton={nextPage}
+          additionalClasses={`${
+            !canNextPage
+              ? 'pointer-events-none opacity-50 cursor-not-allowed'
+              : 'flex-row-reverse hover:bg-gray-200'
+          }`}
+        />
+      </div>
+    </>
   );
 };
 export default Table;
