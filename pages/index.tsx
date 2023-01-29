@@ -1,23 +1,25 @@
 import Pagination from '../components/Pagination';
 import {DownloadIcon, PlusIcon} from '../components/Svgs';
-import TableHeaders from '../components/TableHeaders';
-import UserModal from '../components/UserModal';
-import UsersList from '../components/UsersList';
+import AddUserModal from '../components/AddUserModal';
+import EditUserModal from '../components/EditUserModal';
 import Head from 'next/head';
-import React from 'react';
+import React, {useContext} from 'react';
 import {useState} from 'react';
-import {useQueryClient, useQuery, useMutation} from 'react-query';
+import {useQuery} from 'react-query';
 import {getUsers} from '../api/usersApi';
+import Button from '../components/Button';
+import Table from '../components/Table';
+import {ModalContext} from '../Context/ModalContext';
 
 export default function Home() {
-  const [modalOpen, setModalOpen] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
 
+  const {addModalOpen, setAddModalOpen, editModalOpen} =
+    useContext(ModalContext);
   const handleOpenModal = () => {
-    setModalOpen(!modalOpen);
+    setAddModalOpen(!addModalOpen);
   };
 
-  const queryClient = useQueryClient();
   const {
     isLoading,
     isError,
@@ -35,13 +37,7 @@ export default function Home() {
       <p className="text-red-600 text-center">{(error as Error).message}</p>
     );
   } else {
-    content = (
-      <table className="items-center w-full border-collapse">
-        <TableHeaders />
-        {/* Users List container */}
-        <UsersList users={users} />
-      </table>
-    );
+    content = <Table data={users} />;
   }
 
   return (
@@ -62,23 +58,27 @@ export default function Home() {
             </p>
           </div>
           <div className="mx-3 mb-3 flex gap-3 text-center">
-            <button className="px-4 py-2 border-2 rounded-xl flex justify-center items-center gap-3 hover:bg-gray-200 transition-color">
-              <DownloadIcon />
-              Download CSV
-            </button>
-            <button
-              onClick={handleOpenModal}
-              className="px-4 py-2 bg-blue-500 text-white rounded-xl flex justify-center items-center gap-3 hover:bg-blue-800 transition-color"
-            >
-              <PlusIcon />
-              Add user
-            </button>
+            <Button
+              icon={<DownloadIcon />}
+              text="Download CSV"
+              additionalClasses="white hover:bg-gray-200"
+            />
+            <Button
+              icon={<PlusIcon />}
+              text="Add User"
+              onClickFunciton={handleOpenModal}
+              additionalClasses={'bg-blue-500 hover:bg-blue-800 text-white'}
+            />
           </div>
         </section>
-        {modalOpen ? (
-          <UserModal setModalOpen={setModalOpen} modalOpen={modalOpen} />
+        {addModalOpen ? (
+          <AddUserModal />
+        ) : editModalOpen ? (
+          <EditUserModal />
         ) : null}
-        <div className="block w-full overflow-x-auto">{content}</div>
+        <div className="block w-full overflow-x-auto overflow-y-hidden">
+          {content}
+        </div>
         {/* Footer */}
         <Pagination
           users={users}

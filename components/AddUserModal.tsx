@@ -1,20 +1,14 @@
 import {CloseIcon} from './Svgs';
 import {useMutation, useQueryClient} from 'react-query';
 import {addUser} from '../api/usersApi';
-import {FormEvent, useId, useState} from 'react';
+import {ChangeEvent, FormEvent, useContext, useId, useState} from 'react';
 import React from 'react';
+import {ModalContext} from '../Context/ModalContext';
 
-type Props = {
-  modalOpen: boolean;
-  setModalOpen: (modalOpen: boolean) => void;
-};
+const UserModal = () => {
+  const {setAddModalOpen} = useContext(ModalContext);
+  const [newUser, setNewUser] = useState({name: '', email: '', role: ''});
 
-const UserModal = ({setModalOpen, modalOpen}: Props) => {
-  const [newUser, setNewUser] = useState({
-    name: '',
-    email: '',
-    role: '',
-  });
   const queryClient = useQueryClient();
   const newId = useId();
 
@@ -23,25 +17,27 @@ const UserModal = ({setModalOpen, modalOpen}: Props) => {
       queryClient.invalidateQueries('users');
     },
   });
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     addUserMutation.mutate({
       id: newId,
       name: newUser.name,
       email: newUser.email,
       role: newUser.role,
     });
+
+    setAddModalOpen(false);
+  };
+  const handleChange = (e: ChangeEvent<HTMLFormElement>) => {
+    const {name, value} = e.target;
     setNewUser({
-      name: '',
-      email: '',
-      role: '',
+      ...newUser,
+      [name]: value,
     });
   };
-  const handleChange = (e: FormEvent) => {
-    console.log(e);
-  };
   return (
-    <div className="absolute w-full h-full bg-black bg-opacity-10 backdrop-blur-sm grid place-items-center px-6">
+    <div className="absolute z-10 w-full h-full bg-black bg-opacity-10 backdrop-blur-sm grid place-items-center px-6">
       <form
         onSubmit={handleSubmit}
         onChange={handleChange}
@@ -50,26 +46,19 @@ const UserModal = ({setModalOpen, modalOpen}: Props) => {
         {/* modal close button */}
         <span
           onClick={() => {
-            setModalOpen(!modalOpen);
+            setAddModalOpen(false);
           }}
           className="absolute -top-2 -right-2 bg-gray-600 rounded-full p-2 hover:bg-black transition-color cursor-pointer"
         >
           <CloseIcon />
         </span>
-        <h4 className="font-bold text-xl mb-4">User Details</h4>
+        <h4 className="font-bold text-xl mb-4">New User Details</h4>
         <div className="flex flex-col gap-2">
           <label className="text-sm">Name</label>
           <input
             type="text"
             name="name"
-            className="border-2 border-gray-300 rounded-md w-full px-2 py-2"
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label className="text-sm">Role</label>
-          <input
-            type="text"
-            name="role"
+            required
             className="border-2 border-gray-300 rounded-md w-full px-2 py-2"
           />
         </div>
@@ -78,9 +67,20 @@ const UserModal = ({setModalOpen, modalOpen}: Props) => {
           <input
             type="text"
             name="email"
+            required
             className="border-2 border-gray-300 rounded-md w-full px-2 py-2"
           />
         </div>
+        <div className="flex flex-col gap-2">
+          <label className="text-sm">Role</label>
+          <input
+            type="text"
+            name="role"
+            required
+            className="border-2 border-gray-300 rounded-md w-full px-2 py-2"
+          />
+        </div>
+
         {/* Submit button */}
         <button
           type="submit"

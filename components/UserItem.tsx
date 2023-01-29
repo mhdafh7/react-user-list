@@ -40,7 +40,7 @@ const UserItem = ({id, name, email, avatar, role, status, login}: Props) => {
       </td>
       <td className={'px-6 align-middle text-base whitespace-nowrap p-4'}>
         <span
-          className={`flex items-center justify-center gap-2 ${
+          className={`flex items-center justify-center gap-2 w-24 ${
             status ? 'text-green-900 bg-green-200' : 'text-gray-900 bg-gray-200'
           } py-2 px-1 rounded-3xl`}
         >

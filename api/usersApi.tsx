@@ -2,6 +2,9 @@ import axios, {AxiosRequestConfig} from 'axios';
 
 type User = {
   id: string;
+  name: string;
+  email: string;
+  role: string;
 };
 
 const usersApi = axios.create({
