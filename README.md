@@ -7,13 +7,15 @@ Deployed [Link](https://react-user-list-vmgx.vercel.app/).
 - [Next.Js](https://nextjs.org)
 - [Tailwind CSS](https://tailwindcss.com)
 - [React Query](https://react-query-v3.tanstack.com)
+- [React Table](https://react-table-v7.tanstack.com/)
 
 #### Features
 - Create User
 - Read User
-- Update User(NYI)
+- Update User
 - Delete User
 - Pagination
+- Sorting
 
-Video
+
 
